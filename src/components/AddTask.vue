@@ -10,7 +10,7 @@
     </section>
     <section class="form-control form-control-check">
       <label>Set Reminder</label>
-      <input type="checkbox" name="reminder" v-model="checkbox" placeholder="Set Reminder">
+      <input type="checkbox" name="reminder" v-model="reminder" placeholder="Set Reminder">
     </section>
     <input type="submit" class="btn btn-block" value="Save Task">
   </form>
