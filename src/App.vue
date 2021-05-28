@@ -49,23 +49,20 @@
             return task
           }
         });
+      },
+      async fetchTasks() {
+        const res = await fetch("api/tasks");
+        const data = await res.json();
+        return data;
+      },
+      async fetchTask(id) {
+        const res = await fetch(`api/tasks/${id}`);
+        const data = await res.json();
+        return data;
       }
     },
-    created() {
-      this.tasks = [
-        {
-          id: 1,
-          text: "Take dogs squirrel hunting",
-          day: "June 1st at 5:30pm",
-          reminder: false
-        },
-        {
-          id: 2,
-          text: "Cook dinner",
-          day: "June 2nd at 7:00pm",
-          reminder: true
-        }
-      ]
+    async created() {
+      this.tasks = await this.fetchTasks();
     }
   };
 </script>
