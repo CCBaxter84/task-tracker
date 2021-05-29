@@ -17,7 +17,6 @@
 </template>
 
 <script>
-  import { v4 as uuidv4 } from "uuid";
   export default {
     name: "AddTask",
     data() {
@@ -35,7 +34,6 @@
           return;
         }
         const newTask = {
-          id: uuidv4(),
           text: this.text,
           day: this.day,
           reminder: this.reminder
