@@ -28,19 +28,27 @@
     },
     methods: {
       onSubmit(event) {
-        event.preventDefault();
-        if (!this.text) {
+        event.preventDefault(); // Prevent page refresh
+        if (this.formHasError()) {
           alert("Please add a task");
           return;
+        } else {
+          this.submitNewTask();
+          this.resetFormData();
         }
+      },
+      formHasError() {
+        return !this.text;
+      },
+      submitNewTask() {
         const newTask = {
           text: this.text,
           day: this.day,
           reminder: this.reminder
         }
-
         this.$emit("add-task", newTask);
-
+      },
+      resetFormData() {
         this.text = "";
         this.day = "",
         this.reminder = false;

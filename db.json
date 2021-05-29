@@ -13,10 +13,16 @@
       "reminder": true
     },
     {
-      "text": "Take your mom out to dinner",
-      "day": "Everynight",
+      "text": "Go to zoo",
+      "day": "Tomorrow",
       "reminder": true,
-      "id": 3
+      "id": 4
+    },
+    {
+      "text": "Watch Nuggets game with dad",
+      "day": "Today",
+      "reminder": true,
+      "id": 5
     }
   ]
 }

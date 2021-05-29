@@ -1,6 +1,9 @@
 <template>
-  <article @dblclick="$emit('toggle-reminder', task.id)" :class="[task.reminder ? 'reminder' : '', 'task']">
-    <h3>
+  <article 
+    @dblclick="$emit('toggle-reminder', task.id)" 
+    :class="[task.reminder ? 'reminder' : '', 'task']"
+  >
+    <h3 class="flex">
       {{ task.text }}
       <i @click="onDelete(task.id)" class="fas fa-times"></i>
     </h3>
@@ -39,7 +42,6 @@
   }
 
   .task h3 {
-    display: flex;
     align-items: center;
     justify-content: space-between;
   }

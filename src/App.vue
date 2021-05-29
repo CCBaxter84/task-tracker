@@ -5,116 +5,63 @@
       title="Task Tracker"
       :showAddTask="showAddTask"
     />
-    <AddTask v-show="showAddTask" @add-task="addTask"/>
-    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks= "tasks" />
+    <router-view :showAddTask="showAddTask"></router-view>
   </div>
+  <Footer />
 </template>
 
 <script>
   import Header from "./components/Header";
-  import Tasks from "./components/Tasks";
-  import AddTask from "./components/AddTask";
+  import Footer from "./components/Footer";
 
   export default {
     name: "App",
     components: {
       Header,
-      AddTask,
-      Tasks
+      Footer
     },
     data() {
       return {
-        tasks: [],
         showAddTask: false
       }
     },
     methods: {
-      async addTask(task) {
-        const postRequest = {
-            method: "POST",
-            headers: {
-              "Content-type": "application/json",
-            },
-            body: JSON.stringify(task)
-          }
-        try {
-          const response = await fetch("api/tasks", postRequest);
-          const data = await response.json();
-          this.addToAppData(data);
-        } catch {
-          alert("Error adding task");
-        }
-      },
-      addToAppData(task) {
-        this.tasks = [...this.tasks, task];
-      },
-      async deleteTask(id) {
-        const deleteRequest = { method: "DELETE" }
-        try {
-          const response = await fetch(`api/tasks/${id}`, deleteRequest);
-          const wasSuccessful = response.status === 200;
-          if (wasSuccessful) {
-            this.deleteFromAppData(id);
-          } else {
-            throw "You didn't say the magic word";
-          }
-        } catch {
-          alert("Error deleting task");
-        }        
-      },
-      deleteFromAppData(id) {
-        this.tasks = this.tasks.filter(task => task.id !== id);
-      },
       toggleAddTask() {
         this.showAddTask = !this.showAddTask;
-      },
-      async toggleReminder(id) {
-        try {
-          const task = await this.fetchTask(id);
-          const updatedReminder = { reminder: !task.reminder }
-          const patchRequest = {
-            method: "PATCH",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify(updatedReminder)
-          }
-          const response = await fetch(`api/tasks/${id}`, patchRequest);
-          const data = await this.getData(response);
-          this.toggleReminderInAppData(id, data);
-        } catch {
-          alert("Something went wrong with setting reminder");
-        }
-      },
-      toggleReminderInAppData(id, data) {
-        this.tasks = this.tasks.map(task => {
-          if (task.id === id) {
-            return {
-              ...task,
-              reminder: data.reminder
-            }
-          } else {
-            return task
-          }
-        });
-      },
-      async fetchTasks() {
-        try {
-          const response = await fetch("api/tasks");
-          return await this.getData(response);
-        } catch {
-          alert("Something went wrong fetching tasks");
-        }        
-      },
-      async fetchTask(id) {
-        const response = await fetch(`api/tasks/${id}`);
-        return await this.getData(response);
-      },
-      async getData(response) {
-        const data = await response.json();
-        return data;
       }
-    },
-    async created() {
-      this.tasks = await this.fetchTasks();
     }
-  };
+  }
 </script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 30px auto;
+    overflow: auto;
+    min-height: 300px;
+    border: 1px solid steelblue;
+    padding: 30px;
+    border-radius: 5px;
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

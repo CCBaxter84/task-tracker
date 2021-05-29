@@ -1,7 +1,8 @@
 <template>
-  <header>
+  <header class="flex">
     <h1>{{ title }}</h1>
     <Button
+      v-show="isHomePage"
       @click="$emit('toggle-add-task')"
       :color="showAddTask ? 'red' : 'green'"
       :text="showAddTask ? 'Close' : 'Add Task'"
@@ -20,6 +21,11 @@
     },
     components: {
       Button
+    },
+    computed: {
+      isHomePage() {
+        return this.$route.path === "/";
+      }
     }
   }
 </script>
@@ -27,7 +33,6 @@
 <style scoped>
   header {
     align-items: center;
-    display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
   }
