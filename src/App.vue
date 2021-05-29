@@ -68,12 +68,28 @@
       toggleAddTask() {
         this.showAddTask = !this.showAddTask;
       },
-      toggleReminder(id) {
+      async toggleReminder(id) {
+        try {
+          const task = await this.fetchTask(id);
+          const updatedReminder = { reminder: !task.reminder }
+          const patchRequest = {
+            method: "PATCH",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(updatedReminder)
+          }
+          const response = await fetch(`api/tasks/${id}`, patchRequest);
+          const data = await this.getData(response);
+          this.toggleReminderInAppData(id, data);
+        } catch {
+          alert("Something went wrong with setting reminder");
+        }
+      },
+      toggleReminderInAppData(id, data) {
         this.tasks = this.tasks.map(task => {
           if (task.id === id) {
             return {
               ...task,
-              reminder: !task.reminder
+              reminder: data.reminder
             }
           } else {
             return task
@@ -83,14 +99,14 @@
       async fetchTasks() {
         try {
           const response = await fetch("api/tasks");
-          return this.getData(response);
+          return await this.getData(response);
         } catch {
           alert("Something went wrong fetching tasks");
         }        
       },
       async fetchTask(id) {
         const response = await fetch(`api/tasks/${id}`);
-        return this.getData(response);
+        return await this.getData(response);
       },
       async getData(response) {
         const data = await response.json();
